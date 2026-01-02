@@ -1,0 +1,559 @@
+{
+	"info": {
+		"_postman_id": "hype-blockchain-api",
+		"name": "Hype Blockchain API",
+		"description": "Complete API collection for Hype Blockchain - Authentication and Payment endpoints for mobile app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+									"    pm.collectionVariables.set(\"user_id\", jsonData.user_id);",
+									"    pm.collectionVariables.set(\"username\", jsonData.username);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@example.com\",\n    \"username\": \"johndoe\",\n    \"password\": \"securepassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register a new user account. The access token will be automatically saved to collection variables."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+									"    pm.collectionVariables.set(\"user_id\", jsonData.user_id);",
+									"    pm.collectionVariables.set(\"username\", jsonData.username);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "johndoe",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "securepassword123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login with username and password. The access token will be automatically saved to collection variables."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						},
+						"description": "Get current authenticated user information including wallet address, vault address, and balance."
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints for user registration and login"
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Setup Wallet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"wallet_address\": \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/payment/setup-wallet",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payment",
+								"setup-wallet"
+							]
+						},
+						"description": "Set or update user's wallet address and create vault if needed. This must be called before depositing or sending money."
+					},
+					"response": []
+				},
+				{
+					"name": "Deposit Money",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 100.0,\n    \"currency\": \"USD\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/payment/deposit",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payment",
+								"deposit"
+							]
+						},
+						"description": "Deposit fiat money and convert to tokens in vault. Supported currencies: INR, AED, USD, EUR, GBP, CAD"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Balance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/payment/balance",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payment",
+								"balance"
+							]
+						},
+						"description": "Get user's current balance in wei and USD equivalent."
+					},
+					"response": []
+				},
+				{
+					"name": "Send Money",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"recipient_username\": \"janedoe\",\n    \"amount\": 50.0,\n    \"currency\": \"USD\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/payment/send",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payment",
+								"send"
+							]
+						},
+						"description": "Send money to another user by username or email. Both users must have wallets set up."
+					},
+					"response": []
+				},
+				{
+					"name": "Withdraw Money",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/payment/withdraw?amount=50.0&currency=USD",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"payment",
+								"withdraw"
+							],
+							"query": [
+								{
+									"key": "amount",
+									"value": "50.0",
+									"description": "Amount to withdraw"
+								},
+								{
+									"key": "currency",
+									"value": "USD",
+									"description": "Currency (default: USD)"
+								}
+							]
+						},
+						"description": "Withdraw money from vault to user's wallet address."
+					},
+					"response": []
+				}
+			],
+			"description": "Payment endpoints for mobile app users"
+		},
+		{
+			"name": "Admin/Deployment",
+			"item": [
+				{
+					"name": "Deploy Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"MyToken\",\n    \"symbol\": \"MTK\",\n    \"supply\": 1000000\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/deploy/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"deploy",
+								"token"
+							]
+						},
+						"description": "Deploy a new ERC20 token contract. Returns the token address."
+					},
+					"response": []
+				},
+				{
+					"name": "Deploy Vault",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_address\": \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\",\n    \"token_address\": \"0x5FbDB2315678afecb367f032d93F642f64180aa3\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/deploy/vault",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"deploy",
+								"vault"
+							]
+						},
+						"description": "Deploy a new vault contract for a user. Requires token address."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Vault by Wallet",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/vault/0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vault",
+								"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+							]
+						},
+						"description": "Get vault information by wallet address."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Vault Address",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/vault-address/0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vault-address",
+								"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+							]
+						},
+						"description": "Get receiver's vault address by wallet address."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Balance (Legacy)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/balance?vault_address=0x5FbDB2315678afecb367f032d93F642f64180aa3&user_address=0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"balance"
+							],
+							"query": [
+								{
+									"key": "vault_address",
+									"value": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+								},
+								{
+									"key": "user_address",
+									"value": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+								}
+							]
+						},
+						"description": "Get balance from vault (legacy endpoint)."
+					},
+					"response": []
+				},
+				{
+					"name": "Convert (Legacy)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token_address\": \"0x5FbDB2315678afecb367f032d93F642f64180aa3\",\n    \"vault_address\": \"0x5FbDB2315678afecb367f032d93F642f64180aa3\",\n    \"user_address\": \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\",\n    \"amount\": 100,\n    \"currency\": \"USD\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/convert",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"convert"
+							]
+						},
+						"description": "Convert fiat to tokens and deposit to vault (legacy endpoint)."
+					},
+					"response": []
+				},
+				{
+					"name": "Vault Transfer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vaultA_address\": \"0x5FbDB2315678afecb367f032d93F642f64180aa3\",\n    \"vaultB_address\": \"0x5FbDB2315678afecb367f032d93F642f64180aa3\",\n    \"from_user\": \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\",\n    \"to_user\": \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\",\n    \"amount\": 100\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/vault-transfer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vault-transfer"
+							]
+						},
+						"description": "Transfer tokens between vaults (legacy endpoint)."
+					},
+					"response": []
+				},
+				{
+					"name": "Withdraw (Legacy)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token_address\": \"0x5FbDB2315678afecb367f032d93F642f64180aa3\",\n    \"vault_address\": \"0x5FbDB2315678afecb367f032d93F642f64180aa3\",\n    \"user_address\": \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\",\n    \"amount\": 50\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/withdraw",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"withdraw"
+							]
+						},
+						"description": "Withdraw tokens from vault (legacy endpoint)."
+					},
+					"response": []
+				}
+			],
+			"description": "Admin and deployment endpoints"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+

@@ -1,0 +1,37 @@
+{
+  "name": "draft_2",
+  "version": "1.0.0",
+  "description": "This project showcases a Hardhat 3 Beta project using the native Node.js test runner (`node:test`) and the `viem` library for Ethereum interactions.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "node": "npx hardhat node",
+    "compile": "npx hardhat compile",
+    "deploy:localhost": "npx hardhat run scripts/deploy.js --network localhost",
+    "dev": "concurrently --kill-others --names \"HARDHAT,BACKEND,FRONTEND\" -c \"blue,green,magenta\" \"npm run dev:hardhat\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:hardhat": "npx hardhat node",
+    "dev:backend": "cd backend && source env/bin/activate && uvicorn app.main:app --host 0.0.0.0 --port 8000",
+    "dev:frontend": "cd frontend && npx expo start",
+    "start:all": "node -e \"require('child_process').execSync(process.platform === 'win32' ? 'start-dev.bat' : './start-dev.sh', {stdio: 'inherit'})\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "concurrently": "^9.1.0",
+    "ethers": "^5.8.0",
+    "hardhat": "^2.27.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "@react-navigation/native": "^7.1.19",
+    "@react-navigation/native-stack": "^7.6.1",
+    "axios": "^1.13.1",
+    "expo": "^54.0.25"
+  },
+  "type": "commonjs"
+}
