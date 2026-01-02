@@ -54,7 +54,10 @@ export const ProfileScreen = ({ navigation }: any) => {
                     style: 'destructive',
                     onPress: async () => {
                         await logout();
-                        navigation.replace('Welcome');
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'Auth' }],
+                        });
                     },
                 },
             ]

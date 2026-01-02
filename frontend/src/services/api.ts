@@ -13,7 +13,7 @@ import { BalanceResponse, DepositRequest, DepositResponse, WithdrawRequest, With
 // Backend is running on http://0.0.0.0:8000 (server-side binding)
 
 // Change this based on your platform:
-const BASE_URL = 'http://0.0.0.0:8000'; // Change to 'http://10.0.2.2:8000' for Android Emulator
+const BASE_URL = 'http://192.168.1.4:8000'; // Change to 'http://10.0.2.2:8000' for Android Emulator
 
 const api = axios.create({
     baseURL: BASE_URL,

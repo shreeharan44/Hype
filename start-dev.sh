@@ -53,10 +53,15 @@ sleep 2
 
 # Start frontend
 echo -e "${GREEN}📱 Starting Frontend (Expo)...${NC}"
+echo -e "${YELLOW}👉 Scan the QR code below with your mobile device${NC}"
 cd frontend
-npx expo start > ../.dev-logs/frontend.log 2>&1 &
-FRONTEND_PID=$!
+npx expo start
 cd ..
+
+# Notes:
+# Expo is running in the foreground now. 
+# Script will exit when Expo is stopped (CTRL+C).
+# Background processes (Hardhat, Backend) will be cleaned up by the trap.
 
 echo ""
 echo -e "${GREEN}✨ All services started successfully!${NC}"
@@ -72,6 +77,3 @@ echo ""
 echo -e "${YELLOW}📋 Logs available in .dev-logs/ directory${NC}"
 echo -e "${YELLOW}Press CTRL+C to stop all services${NC}"
 echo ""
-
-# Wait for all background processes
-wait
