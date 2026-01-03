@@ -31,16 +31,12 @@ export const DepositScreen = ({ navigation }: any) => {
         setIsLoading(true);
         try {
             const response = await paymentService.deposit(parseFloat(amount), selectedCurrency);
-            Alert.alert(
-                'Deposit Successful',
-                `${response.message}\nTransaction Hash: ${response.transaction_hash.substring(0, 10)}...`,
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => navigation.goBack(),
-                    },
-                ]
-            );
+            navigation.navigate('PaymentSuccess', {
+                amount: parseFloat(amount).toFixed(2),
+                transactionHash: response.transaction_hash,
+                recipient: 'My Vault',
+                paymentMethod: `${selectedCurrency} Deposit`,
+            });
         } catch (error: any) {
             console.error('Deposit error:', error);
             Alert.alert(

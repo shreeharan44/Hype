@@ -13,7 +13,12 @@ import { Button } from '../components';
 import { colors, typography } from '../theme';
 
 export const PaymentSuccessScreen = ({ navigation, route }: any) => {
-    const { amount = '0.00' } = route.params || {};
+    const { 
+        amount = '0.00', 
+        transactionHash,
+        recipient = 'Unknown Recipient',
+        paymentMethod = 'Wallet'
+    } = route.params || {};
     const date = new Date().toLocaleString();
 
     return (
@@ -47,7 +52,7 @@ export const PaymentSuccessScreen = ({ navigation, route }: any) => {
                             <View style={styles.recipientIcon}>
                                 <Ionicons name="business" size={16} color={colors.primary} />
                             </View>
-                            <Text style={styles.detailValue}>Starbucks Coffee</Text>
+                            <Text style={styles.detailValue}>{recipient}</Text>
                         </View>
                     </View>
 
@@ -58,25 +63,27 @@ export const PaymentSuccessScreen = ({ navigation, route }: any) => {
 
                     <View style={styles.detailRow}>
                         <Text style={styles.detailLabel}>Payment Method</Text>
-                        <Text style={styles.detailValue}>Wallet (USDT)</Text>
+                        <Text style={styles.detailValue}>{paymentMethod}</Text>
                     </View>
 
                     <View style={styles.detailRow}>
                         <Text style={styles.detailLabel}>Transaction ID</Text>
-                        <Text style={styles.detailValue}>#TRX89238923</Text>
+                        <Text style={styles.detailValue}>
+                            {transactionHash ? `#${transactionHash.substring(0, 10)}...` : '#TRX89238923'}
+                        </Text>
                     </View>
                 </View>
 
                 <View style={styles.actions}>
                     <Button
                         title="Done"
-                        onPress={() => navigation.navigate('Home')}
+                        onPress={() => navigation.navigate('Main', { screen: 'Home' })}
                         style={styles.button}
                     />
 
                     <TouchableOpacity
                         style={styles.secondaryButton}
-                        onPress={() => navigation.navigate('Home')}
+                        onPress={() => navigation.navigate('Main', { screen: 'Home' })}
                     >
                         <Text style={styles.secondaryButtonText}>Share Receipt</Text>
                     </TouchableOpacity>

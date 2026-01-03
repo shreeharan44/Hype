@@ -43,19 +43,42 @@ export const PayScreen = ({ navigation }: any) => {
     };
 
     if (!permission) {
-        return <View style={styles.container} />;
-    }
+    return <View style={styles.container} />;
+}
 
-    if (!permission.granted) {
-        return (
-            <View style={styles.container}>
-                <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>
-                    We need your permission to show the camera
-                </Text>
-                <Button onPress={requestPermission} title="grant permission" />
+// Camera permission not granted fallback to manual entry UI
+if (!permission.granted) {
+    return (
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+                    <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>Enter Account ID</Text>
+                <View style={{ width: 40 }} />
             </View>
-        );
-    }
+
+            <View style={styles.content}>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Enter Account ID</Text>
+                    <View style={styles.inputWrapper}>
+                        <Ionicons name="person-outline" size={24} color={colors.primary} style={{ marginRight: 12 }} />
+                        <TextInput
+                            style={styles.input}
+                            value={accountId}
+                            onChangeText={setAccountId}
+                            placeholder="Name"
+                            placeholderTextColor={colors.textMuted}
+                            autoCapitalize="none"
+                        />
+                    </View>
+                </View>
+
+                <Button title="Proceed" onPress={handleProceed} style={styles.button} />
+            </View>
+        </View>
+    );
+}
 
     return (
         <View style={styles.container}>

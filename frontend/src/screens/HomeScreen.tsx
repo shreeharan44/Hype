@@ -58,18 +58,21 @@ export const HomeScreen = ({ navigation }: any) => {
                 paymentService.getTransactions()
             ]);
 
-            setBalanceUsd(balanceResponse.balance_usd);
+            setBalanceUsd(balanceResponse?.balance_usd || 0);
             // Take only the first 4 transactions for the home screen
-            setRecentTransactions(transactionsResponse.transactions.slice(0, 4));
+            const transactions = transactionsResponse?.transactions || [];
+            setRecentTransactions(transactions.slice(0, 4));
         } catch (error) {
             console.error('Error fetching data:', error);
+            setBalanceUsd(0);
+            setRecentTransactions([]);
         } finally {
             setIsLoadingBalance(false);
         }
     };
 
     const formatBalance = (amount: number) => {
-        return amount.toFixed(2);
+        return (amount || 0).toFixed(2);
     };
 
     const getTransactionIcon = (type: string) => {

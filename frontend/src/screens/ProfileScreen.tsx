@@ -32,9 +32,10 @@ export const ProfileScreen = ({ navigation }: any) => {
         setIsLoadingBalance(true);
         try {
             const response = await paymentService.getBalance();
-            setBalanceUsd(response.balance_usd);
+            setBalanceUsd(response?.balance_usd || 0);
         } catch (error) {
             console.error('Error fetching balance:', error);
+            setBalanceUsd(0);
         } finally {
             setIsLoadingBalance(false);
         }
